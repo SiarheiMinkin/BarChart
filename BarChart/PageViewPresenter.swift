@@ -7,7 +7,7 @@
 import Foundation
 import CoreGraphics.CGGeometry
 
-class BasicBarChartPresenter {
+class PageViewPresenter {
     /// the width of each bar
     let barWidth: CGFloat
     
@@ -15,10 +15,10 @@ class BasicBarChartPresenter {
     var space: CGFloat = 0
     
     /// space at the bottom of the bar to show the title
-    private let bottomSpace: CGFloat = 40.0
+    private let bottomSpace: CGFloat = 60.0
     
     /// space at the top of each bar to show the value
-    private let topSpace: CGFloat = 40.0
+    private let topSpace: CGFloat = 66.0
     
     var dataEntries: [DataEntry] = []
     
@@ -30,9 +30,9 @@ class BasicBarChartPresenter {
         return (barWidth + space) * CGFloat(dataEntries.count) + space
     }
     
-    func computeBarEntries(chartFrame: CGRect) -> [BasicBarEntry] {
+    func computeBarEntries(chartFrame: CGRect) -> [BarEntry] {
         space = (chartFrame.width - barWidth * CGFloat(dataEntries.count)) / CGFloat(dataEntries.count)
-        var result: [BasicBarEntry] = []
+        var result: [BarEntry] = []
         
         for (index, entry) in dataEntries.enumerated() {
             let entryHeight = CGFloat(entry.height) * (chartFrame.height - bottomSpace - topSpace)
@@ -40,7 +40,7 @@ class BasicBarChartPresenter {
             let yPosition = chartFrame.height - bottomSpace - entryHeight
             let origin = CGPoint(x: xPosition, y: yPosition)
             
-            let barEntry = BasicBarEntry(origin: origin, barWidth: barWidth, barHeight: entryHeight, space: space, data: entry)
+            let barEntry = BarEntry(origin: origin, barWidth: barWidth, barHeight: entryHeight, space: space, data: entry)
             
             result.append(barEntry)
         }
@@ -49,11 +49,17 @@ class BasicBarChartPresenter {
     
     func computeHorizontalLines(viewHeight: CGFloat) -> [HorizontalLine] {
         var result: [HorizontalLine] = []
-        
+        let step = 1.0 / 8.0
         let horizontalLineInfos = [
             (value: CGFloat(0.0), isDashed: false),
-            (value: CGFloat(0.5), isDashed: true),
-            (value: CGFloat(1.0), isDashed: false)
+            (value: CGFloat(step * 1), isDashed: false),
+            (value: CGFloat(step * 2), isDashed: false),
+            (value: CGFloat(step * 3), isDashed: false),
+            (value: CGFloat(step * 4), isDashed: false),
+            (value: CGFloat(step * 5), isDashed: false),
+            (value: CGFloat(step * 6), isDashed: false),
+            (value: CGFloat(step * 7), isDashed: false),
+            (value: CGFloat(step * 8), isDashed: false)
         ]
         
         for lineInfo in horizontalLineInfos {
@@ -67,7 +73,7 @@ class BasicBarChartPresenter {
             let line = HorizontalLine(
                 segment: lineSegment,
                 isDashed: lineInfo.isDashed,
-                width: 0.5)
+                width: 1)
             result.append(line)
         }
         

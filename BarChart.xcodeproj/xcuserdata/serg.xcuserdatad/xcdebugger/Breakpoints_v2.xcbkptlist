@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9E6C8635-B214-4CB4-8CF0-FF750C58E32A"
+            uuid = "85C1C7CE-C09A-4786-BCFC-8C2B404124B5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BarChart/PageView.swift"
+            filePath = "BarChart/BasicBarChartPresenter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "init(frame:)"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "computeHorizontalLines(viewHeight:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6F48DB1B-03C0-4445-A322-9711B9BC7D97"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BarChart/BarChart.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "addYAsisTitles()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

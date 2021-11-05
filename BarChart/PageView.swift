@@ -21,6 +21,8 @@ class PinnerView: UIView {
         return label
     }()
     
+    var chartType: BarChart.ChartType = .week
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.dateLabel)
@@ -44,10 +46,10 @@ class PageView: UIView {
     private var animated = false
     
     /// Responsible for compute all positions and frames of all elements represent on the bar chart
-    let presenter = BasicBarChartPresenter()
+    let presenter = PageViewPresenter()
     
     /// An array of bar entries. Each BasicBarEntry contain information about line segments, curved line segments, positions and frames of all elements on a bar.
-    private var barEntries: [BasicBarEntry] = [] {
+    private var barEntries: [BarEntry] = [] {
         didSet {
             mainLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
             
@@ -59,6 +61,8 @@ class PageView: UIView {
             }
         }
     }
+    
+    private var chartType: BarChart.ChartType = .week
     
     private var pinnerView: PinnerView = {
        let view = PinnerView(frame: CGRect(x: 0, y: 7, width: 112, height: 46))
@@ -72,7 +76,7 @@ class PageView: UIView {
         return view
     }()
     
-    private var selectedBarEntry: BasicBarEntry? {
+    private var selectedBarEntry: BarEntry? {
         didSet {
             pinnerView.isHidden = false
             self.deselectAll()
@@ -85,9 +89,10 @@ class PageView: UIView {
                 barLayer.shadowOffset = .zero
                 barLayer.shadowRadius = 0
                 barLayer.shadowOpacity = 1
-
-                pinnerView.dateLabel.text = selectedBarEntry.data.title
-                pinnerView.valueLabel.text = selectedBarEntry.data.textValue
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMMM, yyyy"
+                pinnerView.dateLabel.text = dateFormatter.string(from: selectedBarEntry.data.date)
+                pinnerView.valueLabel.text = "\(selectedBarEntry.data.value)"
                 
                 var pinnerFrame = pinnerView.frame
                 if let barLayerFrame = selectedBarEntry.barLayer?.frame {
@@ -134,13 +139,14 @@ class PageView: UIView {
         
     }
         
-    func updateDataEntries(dataEntries: [DataEntry], animated: Bool) {
+    func updateDataEntries(dataEntries: [DataEntry], chartType: BarChart.ChartType, animated: Bool) {
+        self.chartType = chartType
         self.animated = animated
         self.presenter.dataEntries = dataEntries
         self.barEntries = self.presenter.computeBarEntries(chartFrame: frame)
     }
     
-    private func showEntry(index: Int, entry: BasicBarEntry, animated: Bool, oldEntry: BasicBarEntry?) -> BarLayer {
+    private func showEntry(index: Int, entry: BarEntry, animated: Bool, oldEntry: BarEntry?) -> BarLayer {
         
         let cgColor = entry.data.color.cgColor
         
@@ -148,7 +154,69 @@ class PageView: UIView {
         let layer = mainLayer.addRectangleLayer(frame: entry.barFrame, color: cgColor, animated: animated, oldFrame: oldEntry?.barFrame)
 
         // Show a title below the bar
-        mainLayer.addTextLayer(frame: entry.bottomTitleFrame, color: cgColor, fontSize: 14, text: entry.data.title, animated: animated, oldFrame: oldEntry?.bottomTitleFrame)
+        let dateFormatter = DateFormatter()
+        switch chartType {
+        case .week:
+            dateFormatter.dateFormat = "dd"
+            let barFrame = entry.barFrame
+            
+            let dateLayer = CATextLayer()
+            dateLayer.frame = CGRect(x: barFrame.origin.x, y: barFrame.origin.y + barFrame.size.height + 20, width: barFrame.size.width, height: 12)
+            dateLayer.foregroundColor = UIColor.black.cgColor
+            dateLayer.backgroundColor = UIColor.clear.cgColor
+            dateLayer.alignmentMode = CATextLayerAlignmentMode.center
+            dateLayer.contentsScale = UIScreen.main.scale
+            dateLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            dateLayer.fontSize = 10
+            dateLayer.string = dateFormatter.string(from: entry.data.date)
+            mainLayer.addSublayer(dateLayer)
+            
+            dateFormatter.dateFormat = "EEE"
+            let dayLayer = CATextLayer()
+            dayLayer.frame = CGRect(x: dateLayer.frame.origin.x, y: dateLayer.frame.origin.y + dateLayer.frame.size.height + 5, width: dateLayer.frame.size.width, height: 12)
+            dayLayer.foregroundColor = UIColor(red: 0.235, green: 0.235, blue: 0.231, alpha: 0.6).cgColor
+            dayLayer.backgroundColor = UIColor.clear.cgColor
+            dayLayer.alignmentMode = CATextLayerAlignmentMode.center
+            dayLayer.contentsScale = UIScreen.main.scale
+            dayLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            dayLayer.fontSize = 10
+            dayLayer.string = dateFormatter.string(from: entry.data.date)
+            mainLayer.addSublayer(dayLayer)
+            
+            if Calendar.current.isDateInToday(entry.data.date) {
+                let layer = CALayer()
+                layer.cornerRadius = 2
+                layer.frame = CGRect(x: dayLayer.frame.origin.x + dayLayer.frame.width / 2 - 4, y: dayLayer.frame.origin.y + dayLayer.frame.height + 4, width: 8, height: 4)
+                layer.backgroundColor = mainColor.cgColor
+                mainLayer.addSublayer(layer)
+            }
+                        
+
+        case .year:
+            dateFormatter.dateFormat = "MMM"
+            let barFrame = entry.barFrame
+            
+            let dateLayer = CATextLayer()
+            dateLayer.frame = CGRect(x: barFrame.origin.x, y: barFrame.origin.y + barFrame.size.height + 20, width: barFrame.size.width, height: 12)
+            dateLayer.foregroundColor = UIColor(red: 0.235, green: 0.235, blue: 0.231, alpha: 0.6).cgColor
+            dateLayer.backgroundColor = UIColor.clear.cgColor
+            dateLayer.alignmentMode = CATextLayerAlignmentMode.center
+            dateLayer.contentsScale = UIScreen.main.scale
+            dateLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            dateLayer.fontSize = 10
+            dateLayer.string = dateFormatter.string(from: entry.data.date)
+            dateLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(rotationAngle: -.pi/4));
+            mainLayer.addSublayer(dateLayer)
+            
+            if Calendar.current.isDate(entry.data.date, equalTo: Date(), toGranularity: .month) {
+                let layer = CALayer()
+                layer.cornerRadius = 2
+                layer.frame = CGRect(x: dateLayer.frame.origin.x + dateLayer.frame.width / 2 - 4, y: dateLayer.frame.origin.y + dateLayer.frame.height + 4, width: 8, height: 4)
+                layer.backgroundColor = mainColor.cgColor
+                mainLayer.addSublayer(layer)
+            }
+        }
+
         return layer
     }
     
@@ -160,7 +228,7 @@ class PageView: UIView {
         })
         let lines = presenter.computeHorizontalLines(viewHeight: self.frame.height)
         lines.forEach { (line) in
-            mainLayer.addLineLayer(lineSegment: line.segment, color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor, width: line.width, isDashed: line.isDashed, animated: false, oldSegment: nil)
+            mainLayer.addLineLayer(lineSegment: line.segment, color: #colorLiteral(red: 249.0 / 255, green: 249.0 / 255, blue: 248.0 / 255, alpha: 1).cgColor, width: line.width, isDashed: line.isDashed, animated: false, oldSegment: nil)
         }
     }
     

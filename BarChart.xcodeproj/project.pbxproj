@@ -12,9 +12,9 @@
 		D798EC9C229404BF001276C0 /* UIBezierPathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798EC9B229404BF001276C0 /* UIBezierPathExtension.swift */; };
 		D798EC9E229404E6001276C0 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798EC9D229404E6001276C0 /* CALayerExtension.swift */; };
 		D798ECA82295781D001276C0 /* CustomSegments.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798ECA72295781D001276C0 /* CustomSegments.swift */; };
-		D798ECA922957871001276C0 /* BasicBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E5388A1F483C4400D14995 /* BasicBarChart.swift */; };
-		D798ECAA22957871001276C0 /* BasicBarChartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798EC9F2294F9C4001276C0 /* BasicBarChartPresenter.swift */; };
-		D798ECAB22957871001276C0 /* BasicBarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798ECA322950127001276C0 /* BasicBarEntry.swift */; };
+		D798ECA922957871001276C0 /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E5388A1F483C4400D14995 /* BarChart.swift */; };
+		D798ECAA22957871001276C0 /* PageViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798EC9F2294F9C4001276C0 /* PageViewPresenter.swift */; };
+		D798ECAB22957871001276C0 /* BarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798ECA322950127001276C0 /* BarEntry.swift */; };
 		D7C514DE22A404B40016347F /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C514DD22A404B40016347F /* ArrayExtension.swift */; };
 		D7E538751F483B5D00D14995 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E538741F483B5D00D14995 /* AppDelegate.swift */; };
 		D7E538771F483B5D00D14995 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E538761F483B5D00D14995 /* ViewController.swift */; };
@@ -29,8 +29,8 @@
 		D5D9AFFF272B02810050F597 /* BarLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarLayer.swift; sourceTree = "<group>"; };
 		D798EC9B229404BF001276C0 /* UIBezierPathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPathExtension.swift; sourceTree = "<group>"; };
 		D798EC9D229404E6001276C0 /* CALayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
-		D798EC9F2294F9C4001276C0 /* BasicBarChartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicBarChartPresenter.swift; sourceTree = "<group>"; };
-		D798ECA322950127001276C0 /* BasicBarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicBarEntry.swift; sourceTree = "<group>"; };
+		D798EC9F2294F9C4001276C0 /* PageViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewPresenter.swift; sourceTree = "<group>"; };
+		D798ECA322950127001276C0 /* BarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarEntry.swift; sourceTree = "<group>"; };
 		D798ECA72295781D001276C0 /* CustomSegments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegments.swift; sourceTree = "<group>"; };
 		D7C514DD22A404B40016347F /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		D7E538711F483B5D00D14995 /* BarChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,7 +41,7 @@
 		D7E5387E1F483B5D00D14995 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D7E538801F483B5D00D14995 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7E538881F483BF100D14995 /* DataEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataEntry.swift; sourceTree = "<group>"; };
-		D7E5388A1F483C4400D14995 /* BasicBarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicBarChart.swift; sourceTree = "<group>"; };
+		D7E5388A1F483C4400D14995 /* BarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,10 +71,10 @@
 		D798ECA52295772F001276C0 /* BasicBarChart */ = {
 			isa = PBXGroup;
 			children = (
-				D7E5388A1F483C4400D14995 /* BasicBarChart.swift */,
-				D798EC9F2294F9C4001276C0 /* BasicBarChartPresenter.swift */,
-				D798ECA322950127001276C0 /* BasicBarEntry.swift */,
+				D7E5388A1F483C4400D14995 /* BarChart.swift */,
+				D798ECA322950127001276C0 /* BarEntry.swift */,
 				D5321D642728654D00C25907 /* PageView.swift */,
+				D798EC9F2294F9C4001276C0 /* PageViewPresenter.swift */,
 			);
 			name = BasicBarChart;
 			sourceTree = "<group>";
@@ -195,12 +195,12 @@
 				D7E538771F483B5D00D14995 /* ViewController.swift in Sources */,
 				D798ECA82295781D001276C0 /* CustomSegments.swift in Sources */,
 				D5321D652728654D00C25907 /* PageView.swift in Sources */,
-				D798ECAA22957871001276C0 /* BasicBarChartPresenter.swift in Sources */,
+				D798ECAA22957871001276C0 /* PageViewPresenter.swift in Sources */,
 				D7E538751F483B5D00D14995 /* AppDelegate.swift in Sources */,
-				D798ECAB22957871001276C0 /* BasicBarEntry.swift in Sources */,
+				D798ECAB22957871001276C0 /* BarEntry.swift in Sources */,
 				D5D9B000272B02810050F597 /* BarLayer.swift in Sources */,
 				D798EC9C229404BF001276C0 /* UIBezierPathExtension.swift in Sources */,
-				D798ECA922957871001276C0 /* BasicBarChart.swift in Sources */,
+				D798ECA922957871001276C0 /* BarChart.swift in Sources */,
 				D798EC9E229404E6001276C0 /* CALayerExtension.swift in Sources */,
 				D7C514DE22A404B40016347F /* ArrayExtension.swift in Sources */,
 			);
