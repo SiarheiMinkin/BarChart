@@ -148,7 +148,7 @@ class PageView: UIView {
     
     private func showEntry(index: Int, entry: BarEntry, animated: Bool, oldEntry: BarEntry?) -> BarLayer {
         
-        let cgColor = entry.data.color.cgColor
+        let cgColor = mainColor.cgColor
         
         // Show the main bar
         let layer = mainLayer.addRectangleLayer(frame: entry.barFrame, color: cgColor, animated: animated, oldFrame: oldEntry?.barFrame)

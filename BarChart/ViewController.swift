@@ -18,13 +18,14 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-       barChart.chartType = .year
-       barChart.setPages(pages: [generateEmptyDataEntries()])
-       barChart.setPages(pages: [generateRandomDataEntries(), generateRandomDataEntries(), generateRandomDataEntries()])
+       barChart.chartType = .week
+        self.barChart.addEntries(generateRandomDataEntries())
+      // barChart.setPages(pages: [generateEmptyDataEntries()])
+      // barChart.setPages(pages: [generateRandomDataEntries(), generateRandomDataEntries(), generateRandomDataEntries()])
         
         let timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {[unowned self] (timer) in
             let dataEntries = self.generateRandomDataEntries()
-            self.barChart.addPages(pages: [dataEntries])
+            self.barChart.addEntries(dataEntries)
         }
         timer.fire()
     }
@@ -32,7 +33,7 @@ class ViewController: UIViewController {
     func generateEmptyDataEntries() -> [DataEntry] {
         var result: [DataEntry] = []
         Array(0..<numEntry).forEach {_ in
-            result.append(DataEntry(color: UIColor.clear, height: 0, date: Date(), value: 0))
+            result.append(DataEntry(height: 0, date: Date(), value: 0))
         }
         return result
     }
@@ -46,11 +47,11 @@ class ViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateFormat = "d MMM"
             var date = Date()
-            date.addTimeInterval(TimeInterval(24*60*60*counter))
+            date.addTimeInterval(-TimeInterval(24*60*60*counter))
             counter += 1
-            result.append(DataEntry(color: UIColor(red: 65.0/255.0, green: 142.0/255.0, blue: 145.0/255.0, alpha: 1), height: height, date: date, value: Int(value)))
+            result.append(DataEntry(height: height, date: date, value: Int(value)))
         }
-        return result.reversed()
+        return result
     }
 }
 

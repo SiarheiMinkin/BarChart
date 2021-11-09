@@ -14,7 +14,6 @@ class BarChart: UIView {
     }
     
     private let scrollView: UIScrollView = UIScrollView()
-    
     /// space at the bottom of the bar to show the title
     private let bottomSpace: CGFloat = 60.0
     
@@ -28,6 +27,7 @@ class BarChart: UIView {
     private var currentPageIndex = 0
     private var previousPageIndex = 0
     
+    private var entries: [DataEntry] = []
     private var pages: [[DataEntry]] = []
     
     var chartType: ChartType = .week {
@@ -50,6 +50,9 @@ class BarChart: UIView {
         //scrollView.layer.addSublayer(mainLayer)
         self.addSubview(scrollView)
         scrollView.isPagingEnabled = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        
         scrollView.delegate = self
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +89,48 @@ class BarChart: UIView {
         addYAsisTitles()
     }
     
+    func addEntries(_ entr: [DataEntry]) {
+        self.entries.append(contentsOf: entr)
+        
+        switch chartType {
+        case .week:
+            let calendar = Calendar.current
+            if let firstDay = self.entries.first?.date {
+                let lastDay = calendar.startOfDay(for: firstDay)
+                let dayOfWeek = calendar.component(.weekday, from: lastDay)
+                let div = 7 - dayOfWeek
+                if div > 0 {
+                    for n in 1...div {
+                        if let date = calendar.date(byAdding: .day, value: n, to: lastDay) {
+                            self.entries.insert(DataEntry(height: 0, date: date, value: 0), at: 0)
+                        }
+                    }
+                }
+
+                
+            }
+        case .year:
+            ()
+        }
+        
+        calulatePages()
+        updatePages()
+    }
+    
+    func calulatePages() {
+        var page = [DataEntry]()
+        pages = []
+        for (index, element) in self.entries.enumerated() {
+            if index % 7 == 0 {
+                if !page.isEmpty {
+                    pages.append(page.reversed())
+                }
+                page = [DataEntry]()
+            }
+            page.append(element)
+        }
+    }
+    
     func setPages(pages: [[DataEntry]]) {
         self.pages = pages
         if pages.count > 0 {
@@ -101,8 +146,61 @@ class BarChart: UIView {
         }
     }
     
-    func addPages(pages: [[DataEntry]]) {
-        self.pages.append(contentsOf: pages)
+    func updatePages() {
+        if currentPageIndex < (pages.count - 1) && currentPageIndex > 0 {
+            scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 3, height: scrollView.frame.size.height)
+            scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
+            
+            leftView.isHidden = false
+            midleView.isHidden = false
+            rightView.isHidden = false
+            
+            leftView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            midleView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            rightView.frame = CGRect(x: scrollView.frame.size.width * 2, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            
+            leftView.updateDataEntries(dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
+            midleView.updateDataEntries(dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
+            rightView.updateDataEntries(dataEntries: pages[currentPageIndex - 1], chartType: chartType, animated: false)
+            
+
+        } else if currentPageIndex > 0 && pages.count > 1 {
+            scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 2, height: scrollView.frame.size.height)
+            scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            
+            leftView.isHidden = true
+            midleView.isHidden = false
+            rightView.isHidden = false
+            
+            midleView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            rightView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            
+            midleView.updateDataEntries(dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
+            rightView.updateDataEntries(dataEntries: pages[currentPageIndex - 1], chartType: chartType, animated: false)
+        } else if pages.count > 1 {
+            scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 2, height: scrollView.frame.size.height)
+            scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
+            
+            leftView.isHidden = false
+            midleView.isHidden = false
+            rightView.isHidden = true
+            
+            leftView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            midleView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            
+            leftView.updateDataEntries(dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
+            midleView.updateDataEntries(dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
+        } else {
+            scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            
+            leftView.isHidden = true
+            midleView.isHidden = false
+            rightView.isHidden = true
+            
+            midleView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            midleView.updateDataEntries(dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
+        }
     }
     
     func addYAsisTitles() {

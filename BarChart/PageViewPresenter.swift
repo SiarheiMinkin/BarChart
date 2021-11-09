@@ -27,7 +27,7 @@ class PageViewPresenter {
     }
     
     func computeContentWidth() -> CGFloat {
-        return (barWidth + space) * CGFloat(dataEntries.count) + space
+        return (barWidth + space) * CGFloat(dataEntries.count)
     }
     
     func computeBarEntries(chartFrame: CGRect) -> [BarEntry] {
