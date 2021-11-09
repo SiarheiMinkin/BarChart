@@ -76,6 +76,7 @@ class PageView: UIView {
         return view
     }()
     
+    
     private var selectedBarEntry: BarEntry? {
         didSet {
             pinnerView.isHidden = false
@@ -112,6 +113,8 @@ class PageView: UIView {
         }
     }
     
+    var pageIndex = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -139,7 +142,8 @@ class PageView: UIView {
         
     }
         
-    func updateDataEntries(dataEntries: [DataEntry], chartType: BarChart.ChartType, animated: Bool) {
+    func updateDataEntries(pageIndex: Int, dataEntries: [DataEntry], chartType: BarChart.ChartType, animated: Bool) {
+        self.pageIndex = pageIndex
         self.chartType = chartType
         self.animated = animated
         self.presenter.dataEntries = dataEntries

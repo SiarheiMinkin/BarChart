@@ -150,7 +150,7 @@
 				TargetAttributes = {
 					D7E538701F483B5D00D14995 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 9TZTHJXX2D;
+						DevelopmentTeam = QRC4JHNDS2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -345,10 +345,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9TZTHJXX2D;
+				DEVELOPMENT_TEAM = QRC4JHNDS2;
 				INFOPLIST_FILE = BarChart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = leonard.BarChart;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cogniteq.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -358,10 +358,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9TZTHJXX2D;
+				DEVELOPMENT_TEAM = QRC4JHNDS2;
 				INFOPLIST_FILE = BarChart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = leonard.BarChart;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cogniteq.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
