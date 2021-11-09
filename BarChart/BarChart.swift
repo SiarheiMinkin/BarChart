@@ -153,7 +153,7 @@ class BarChart: UIView {
     
     func updatePages() {
         guard !pages.isEmpty else {return}
-        if currentPageIndex < (pages.count - 1) && currentPageIndex > 0 {
+        if currentPageIndex < (pages.count - 1) && currentPageIndex > 0 { // if >=3 page, current page at the middle
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 3, height: scrollView.frame.size.height)
             scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
             
@@ -179,17 +179,10 @@ class BarChart: UIView {
             midleView.isHidden = false
             rightView.isHidden = false
             
-        } else if currentPageIndex == (pages.count - 1) && pages.count > 1 {
+        } else if currentPageIndex == (pages.count - 1) && pages.count > 1 { // if >=3 page, current page at the left
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 2, height: scrollView.frame.size.height)
             scrollView.contentOffset = CGPoint(x: 0, y: 0)
-            
-//            if currentPageIndex > midleView.pageIndex {
-//                let tempView = rightView
-//                rightView = midleView
-//                midleView = leftView
-//                leftView = tempView
-//                leftView.updateDataEntries(pageIndex: currentPageIndex + 1, dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
-//            }
+
 
             if leftView.pageIndex != (pages.count - 1) {
                 leftView.updateDataEntries(pageIndex: currentPageIndex, dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
@@ -210,7 +203,7 @@ class BarChart: UIView {
             rightView.isHidden = true
 
         } else if pages.count >= 3 {
-            if currentPageIndex == 0 {
+            if currentPageIndex == 0 {// if >=3 page, current page at the right
                 scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 3, height: scrollView.frame.size.height)
                 scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width * 2, y: 0)
                 
@@ -233,7 +226,7 @@ class BarChart: UIView {
                 leftView.isHidden = false
                 midleView.isHidden = false
                 rightView.isHidden = false
-            } else if currentPageIndex == (pages.count - 1) {
+            } else if currentPageIndex == (pages.count - 1) { // if >=3 page, current page at the left
                 scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 3, height: scrollView.frame.size.height)
                 scrollView.contentOffset = CGPoint(x: 0, y: 0)
                 
@@ -258,32 +251,19 @@ class BarChart: UIView {
                 rightView.isHidden = false
             }
             
-        } else if currentPageIndex == 0 && pages.count == 2 {
+        } else if currentPageIndex == 0 && pages.count == 2 { // if 2 page
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width * 2, height: scrollView.frame.size.height)
             scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
             
-//            if currentPageIndex > midleView.pageIndex {
-//                let tempView = rightView
-//                rightView = midleView
-//                midleView = leftView
-//                leftView = tempView
-//                leftView.updateDataEntries(pageIndex: currentPageIndex + 1, dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
-//            } else if currentPageIndex < midleView.pageIndex {
-//                let tempView = leftView
-//                leftView = midleView
-//                midleView = rightView
-//                rightView = tempView
-//                rightView.updateDataEntries(pageIndex: currentPageIndex - 1, dataEntries: pages[currentPageIndex - 1], chartType: chartType, animated: false)
-//            } else {
-//                if (currentPageIndex + 1) < pages.count {
-//                    leftView.updateDataEntries(pageIndex: currentPageIndex + 1, dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
-//                }
-//
-//                if (currentPageIndex - 1) >= 0 {
-//                    rightView.updateDataEntries(pageIndex: currentPageIndex - 1, dataEntries: pages[currentPageIndex - 1], chartType: chartType, animated: false)
-//                }
-//            }
 
+            leftView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            midleView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            rightView.frame = CGRect(x: scrollView.frame.size.width * 2, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
+            
+            leftView.isHidden = false
+            midleView.isHidden = false
+            rightView.isHidden = true
+            
             if leftView.pageIndex != (currentPageIndex + 1) {
                 leftView.updateDataEntries(pageIndex: currentPageIndex + 1, dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
             }
@@ -292,17 +272,7 @@ class BarChart: UIView {
                 midleView.updateDataEntries(pageIndex: currentPageIndex, dataEntries: pages[currentPageIndex], chartType: chartType, animated: false)
             }
 
-
-            
-            leftView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-            midleView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-            rightView.frame = CGRect(x: scrollView.frame.size.width * 2, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-            
-            leftView.isHidden = false
-            midleView.isHidden = false
-            rightView.isHidden = true
-
-        } else {
+        } else { // if 1 page
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: scrollView.frame.size.height)
             scrollView.contentOffset = CGPoint(x: 0, y: 0)
             
@@ -340,57 +310,13 @@ class BarChart: UIView {
 extension BarChart: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        if scrollView.bounds.contains(rightView.center) {
-            currentPageIndex = rightView.pageIndex
+        if scrollView.bounds.contains(leftView.center) {
+            currentPageIndex = leftView.pageIndex
         } else if scrollView.bounds.contains(midleView.center) {
             currentPageIndex = midleView.pageIndex
         } else if scrollView.bounds.contains(rightView.center) {
             currentPageIndex = rightView.pageIndex
         }
-        
-//        previousPageIndex = 1
-//        let index = Int(scrollView.contentOffset.x / scrollView.bounds.size.width)
-//
-//        if (previousPageIndex - index) > 0 && currentPageIndex < (pages.count - 1) {
-//            currentPageIndex += 1
-//        } else if (previousPageIndex - index) < 0 && currentPageIndex > 0 {
-//            currentPageIndex -= 1
-//        }
-//
-//        previousPageIndex = 1
-//        updatePages()
-        
-        
-//        if index == 0 && currentPageIndex < (pages.count - 1) {
-//            let firstView = rightView
-//            let secondView = leftView
-//            let thirdView = midleView
-//            scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
-//            firstView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            secondView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            thirdView.frame = CGRect(x: scrollView.frame.size.width * 2, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            leftView = firstView
-//            midleView = secondView
-//            rightView = thirdView
-//
-//            leftView.updateDataEntries(dataEntries: pages[currentPageIndex - 1], chartType: chartType, animated: false)
-//
-//            previousPageIndex = 1
-//        } else if index == 2 && currentPageIndex > 0 {
-//            let firstView = midleView
-//            let secondView = rightView
-//            let thirdView = leftView
-//            scrollView.contentOffset = CGPoint(x: scrollView.frame.size.width, y: 0)
-//            firstView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            secondView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            thirdView.frame = CGRect(x: scrollView.frame.size.width * 2, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-//            leftView = firstView
-//            midleView = secondView
-//            rightView = thirdView
-//
-//            rightView.updateDataEntries(dataEntries: pages[currentPageIndex + 1], chartType: chartType, animated: false)
-//
-//            previousPageIndex = 1
-//        }
+        updatePages()
     }
 }
