@@ -18,11 +18,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-       barChart.chartType = .week
+       barChart.chartType = .year
         self.barChart.addEntries(generateRandomDataEntries())
-      // barChart.setPages(pages: [generateEmptyDataEntries()])
-      // barChart.setPages(pages: [generateRandomDataEntries(), generateRandomDataEntries(), generateRandomDataEntries()])
-        
         let timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {[unowned self] (timer) in
             let dataEntries = self.generateRandomDataEntries()
             self.barChart.addEntries(dataEntries)
@@ -33,7 +30,7 @@ class ViewController: UIViewController {
     func generateEmptyDataEntries() -> [DataEntry] {
         var result: [DataEntry] = []
         Array(0..<numEntry).forEach {_ in
-            result.append(DataEntry(height: 0, date: Date(), value: 0))
+            result.append(DataEntry(date: Date(), value: 0))
         }
         return result
     }
@@ -42,14 +39,12 @@ class ViewController: UIViewController {
         var result: [DataEntry] = []
         for i in 0..<numEntry {
             let value = (Int(arc4random()) % (counter + 1))
-            let height: Float = Float(value) / 100.0
-            
             let formatter = DateFormatter()
             formatter.dateFormat = "d MMM"
             var date = Date()
-            date.addTimeInterval(-TimeInterval(24*60*60*counter))
+            date.addTimeInterval(-TimeInterval(24*60*60*counter * 30))
             counter += 1
-            result.append(DataEntry(height: height, date: date, value: Int(value)))
+            result.append(DataEntry(date: date, value: Int(value)))
         }
         return result
     }

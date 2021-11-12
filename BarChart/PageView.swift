@@ -77,39 +77,47 @@ class PageView: UIView {
     }()
     
     
-    private var selectedBarEntry: BarEntry? {
+    var selectedBarEntry: BarEntry? {
         didSet {
-            pinnerView.isHidden = false
-            self.deselectAll()
-            if let selectedBarEntry = selectedBarEntry, let barLayer = selectedBarEntry.barLayer {
-                barLayer.shadowColor = mainColor.withAlphaComponent(0.2).cgColor
-                
-                let shadowPath = UIBezierPath(roundedRect: CGRect(x: -2, y: -2, width: barLayer.frame.width + 4, height: barLayer.frame.height + 4), cornerRadius: 5)
-                barLayer.shadowPath = shadowPath.cgPath
+            if selectedBarEntry == nil {
+                pinnerView.isHidden = true
+                lineView.isHidden = true
+                self.deselectAll()
+            } else {
+                pinnerView.isHidden = false
+                lineView.isHidden = false
+                self.deselectAll()
+                if let selectedBarEntry = selectedBarEntry, let barLayer = selectedBarEntry.barLayer {
+                    barLayer.shadowColor = mainColor.withAlphaComponent(0.2).cgColor
+                    
+                    let shadowPath = UIBezierPath(roundedRect: CGRect(x: -2, y: -2, width: barLayer.frame.width + 4, height: barLayer.frame.height + 4), cornerRadius: 5)
+                    barLayer.shadowPath = shadowPath.cgPath
 
-                barLayer.shadowOffset = .zero
-                barLayer.shadowRadius = 0
-                barLayer.shadowOpacity = 1
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMMM, yyyy"
-                pinnerView.dateLabel.text = dateFormatter.string(from: selectedBarEntry.data.date)
-                pinnerView.valueLabel.text = "\(selectedBarEntry.data.value)"
-                
-                var pinnerFrame = pinnerView.frame
-                if let barLayerFrame = selectedBarEntry.barLayer?.frame {
-                    let centerX = barLayerFrame.origin.x + barLayerFrame.width / 2
-                    if (centerX - pinnerView.frame.size.width) < 0 {
-                        pinnerFrame.origin.x = 0
-                    } else if (centerX + pinnerView.frame.size.width) > frame.size.width {
-                        pinnerFrame.origin.x = frame.size.width - pinnerFrame.width
-                    } else {
-                        pinnerFrame.origin.x = centerX - pinnerFrame.width / 2
+                    barLayer.shadowOffset = .zero
+                    barLayer.shadowRadius = 0
+                    barLayer.shadowOpacity = 1
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "MMMM, yyyy"
+                    pinnerView.dateLabel.text = dateFormatter.string(from: selectedBarEntry.data.date)
+                    pinnerView.valueLabel.text = "\(selectedBarEntry.data.value)"
+                    
+                    var pinnerFrame = pinnerView.frame
+                    if let barLayerFrame = selectedBarEntry.barLayer?.frame {
+                        let centerX = barLayerFrame.origin.x + barLayerFrame.width / 2
+                        if (centerX - pinnerView.frame.size.width) < 0 {
+                            pinnerFrame.origin.x = 0
+                        } else if (centerX + pinnerView.frame.size.width) > frame.size.width {
+                            pinnerFrame.origin.x = frame.size.width - pinnerFrame.width
+                        } else {
+                            pinnerFrame.origin.x = centerX - pinnerFrame.width / 2
+                        }
+                        pinnerView.frame = pinnerFrame
+                        lineView.frame = CGRect(x: barLayerFrame.origin.x + barLayerFrame.width / 2, y: pinnerFrame.origin.y + pinnerFrame.size.height, width: 2, height: barLayerFrame.origin.y - (pinnerFrame.origin.y + pinnerFrame.height))
                     }
-                    pinnerView.frame = pinnerFrame
-                    lineView.frame = CGRect(x: barLayerFrame.origin.x + barLayerFrame.width / 2, y: pinnerFrame.origin.y + pinnerFrame.size.height, width: 2, height: barLayerFrame.origin.y - (pinnerFrame.origin.y + pinnerFrame.height))
+                    
                 }
-                
             }
+
         }
     }
     
@@ -142,12 +150,12 @@ class PageView: UIView {
         
     }
         
-    func updateDataEntries(pageIndex: Int, dataEntries: [DataEntry], chartType: BarChart.ChartType, animated: Bool) {
+    func updateDataEntries(pageIndex: Int, dataEntries: [DataEntry], maxValue: Int, chartType: BarChart.ChartType, animated: Bool) {
         self.pageIndex = pageIndex
         self.chartType = chartType
         self.animated = animated
         self.presenter.dataEntries = dataEntries
-        self.barEntries = self.presenter.computeBarEntries(chartFrame: frame)
+        self.barEntries = self.presenter.computeBarEntries(chartFrame: frame, maxValue: maxValue)
     }
     
     private func showEntry(index: Int, entry: BarEntry, animated: Bool, oldEntry: BarEntry?) -> BarLayer {
@@ -248,7 +256,6 @@ class PageView: UIView {
                 return true
             }
             return false
-            //layer.contains(layer.convert(touchPoint, from: layer.superlayer)) && (layer is BarLayer)
         }).first {
             selectedBarEntry = barEntry
         }

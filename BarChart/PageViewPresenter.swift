@@ -30,12 +30,11 @@ class PageViewPresenter {
         return (barWidth + space) * CGFloat(dataEntries.count)
     }
     
-    func computeBarEntries(chartFrame: CGRect) -> [BarEntry] {
+    func computeBarEntries(chartFrame: CGRect, maxValue: Int) -> [BarEntry] {
         space = (chartFrame.width - barWidth * CGFloat(dataEntries.count)) / CGFloat(dataEntries.count)
         var result: [BarEntry] = []
-        
         for (index, entry) in dataEntries.enumerated() {
-            let entryHeight = CGFloat(entry.height) * (chartFrame.height - bottomSpace - topSpace)
+            let entryHeight = (chartFrame.height - bottomSpace - topSpace) / CGFloat(maxValue) * CGFloat(entry.value)
             let xPosition: CGFloat = space / 2 + CGFloat(index) * (barWidth + space)
             let yPosition = chartFrame.height - bottomSpace - entryHeight
             let origin = CGPoint(x: xPosition, y: yPosition)
