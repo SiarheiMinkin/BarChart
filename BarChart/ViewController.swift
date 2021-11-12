@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     func generateRandomDataEntries() -> [DataEntry] {
         var result: [DataEntry] = []
         for i in 0..<numEntry {
-            let value = (arc4random() % 90) + 10
+            let value = (Int(arc4random()) % (counter + 1))
             let height: Float = Float(value) / 100.0
             
             let formatter = DateFormatter()

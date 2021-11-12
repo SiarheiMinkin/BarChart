@@ -30,8 +30,8 @@
             filePath = "BarChart/BarChart.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "setPages(pages:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -55,6 +55,20 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "480876E2-0B23-47D2-A3B6-3FE8C3555CD0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BarChart/BarChart.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "352"
+            endingLineNumber = "352">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "26D78D35-E8E2-42CC-84D2-A4BA32E391D7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -62,25 +76,23 @@
             filePath = "BarChart/BarChart.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "scrollViewDidEndDecelerating(_:)"
-            landmarkType = "7">
+            startingLineNumber = "343"
+            endingLineNumber = "343">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "27825259-2C0B-46FB-B69F-951E965759F8"
+            uuid = "13A52C7F-1B78-4D51-B793-1E322FD9E4A2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BarChart/BarChart.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
-            landmarkName = "updatePages()"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "calculateYAxiseMaxValue()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

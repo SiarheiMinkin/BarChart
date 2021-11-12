@@ -7,21 +7,6 @@
 import UIKit
 
 extension CALayer {
-    func addCurvedLayer(curvedSegment: CurvedSegment, color: CGColor, animated: Bool, oldSegment: CurvedSegment?) {
-        let layer = CAShapeLayer()
-        layer.path = UIBezierPath(curvedSegment: curvedSegment).cgPath
-        layer.fillColor = color
-        layer.strokeColor = color
-        layer.lineWidth = 0.0
-        self.addSublayer(layer)
-        
-        if animated, let segment = oldSegment {
-            layer.animate(
-                fromValue: UIBezierPath(curvedSegment: segment).cgPath,
-                toValue: layer.path!,
-                keyPath: "path")
-        }
-    }
     
     func addLineLayer(lineSegment: LineSegment, color: CGColor, width: CGFloat, isDashed: Bool, animated: Bool, oldSegment: LineSegment?) {
         let layer = CAShapeLayer()
@@ -39,23 +24,6 @@ extension CALayer {
                 fromValue: UIBezierPath(lineSegment: segment).cgPath,
                 toValue: layer.path!,
                 keyPath: "path")
-        }
-    }
-    
-    func addCircleLayer(origin: CGPoint, radius: CGFloat, color: CGColor, animated: Bool, oldOrigin: CGPoint?) {
-        let layer = CALayer()
-        layer.frame = CGRect(x: origin.x, y: origin.y, width: radius * 2, height: radius * 2)
-        layer.backgroundColor = color
-        layer.cornerRadius = radius
-        self.addSublayer(layer)
-        
-        if animated, let oldOrigin = oldOrigin {
-            let oldFrame = CGRect(x: oldOrigin.x, y: oldOrigin.y, width: radius * 2, height: radius * 2)
-            
-            // "frame" property is not animatable in CALayer, so, I use "position" instead
-            layer.animate(fromValue: CGPoint(x: oldFrame.midX, y: oldFrame.midY),
-                          toValue: CGPoint(x: layer.frame.midX, y: layer.frame.midY),
-                          keyPath: "position")
         }
     }
     
